@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,7 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Dashboard/Category/CategoryView', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -28,7 +32,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => ['required']
+        ]);
+
+        Category::create([
+            'slug' => Str::slug($request->nama_kategori),
+            'nama_kategori' => $request->nama_kategori
+        ]);
+
+
+        return to_route('category.index')->with('message', 'Category Quiz berhasil dibuat!');
     }
 
     /**
@@ -50,16 +64,27 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => ['required']
+        ]);
+
+        Category::whereId($request->id)->update([
+            'slug' => Str::slug($request->nama_kategori),
+            'nama_kategori' => $request->nama_kategori
+        ]);
+
+        return to_route('category.index')->with('message', 'Category Quiz berhasil Diubah!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request)
     {
-        //
+
+        Category::destroy($request->id);
+        return to_route('category.index')->with('message', 'Category Quiz berhasil Dihapus!');
     }
 }

@@ -44,7 +44,7 @@
             <ul class="space-y-2 font-medium">
                 <li>
                     <Link
-                        href="#"
+                        :href="route('dashboard')"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
@@ -64,6 +64,7 @@
                         <span class="ms-3">Dashboard</span>
                     </Link>
                 </li>
+
                 <li>
                     <Link
                         href="#"
@@ -87,6 +88,32 @@
                         <span class="flex-1 ms-3 whitespace-nowrap">Users</span>
                     </Link>
                 </li>
+                <li>
+                    <Link
+                        :href="route('category.index')"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                        <svg
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-width="2"
+                                d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5"
+                            />
+                        </svg>
+
+                        <span class="ms-3">Category Quiz</span>
+                    </Link>
+                </li>
+                <hr />
+
                 <li>
                     <Link
                         href="#"
@@ -133,15 +160,42 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"
+                                d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                             />
                         </svg>
+
                         <span class="flex-1 ms-3 whitespace-nowrap"
-                            >Results</span
+                            >Question</span
                         >
                     </Link>
                 </li>
+                <li>
+                    <Link
+                        href="#"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                        <svg
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5 11.917 9.724 16.5 19 7.5"
+                            />
+                        </svg>
 
+                        <span class="flex-1 ms-3 whitespace-nowrap"
+                            >Answer</span
+                        >
+                    </Link>
+                </li>
                 <li>
                     <Link
                         href="#"
@@ -167,6 +221,33 @@
                         >
                     </Link>
                 </li>
+                <li>
+                    <Link
+                        href="#"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                        <svg
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"
+                            />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap"
+                            >Results</span
+                        >
+                    </Link>
+                </li>
+
                 <hr />
                 <li>
                     <Link

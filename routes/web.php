@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuizController;
@@ -20,3 +21,4 @@ Route::post('register', [AuthController::class, 'registerStore'])->name('registe
 
 //SECTION - Dashboard 
 Route::resource('dashboard/quiz', QuizController::class);
+Route::resource('dashboard/category', CategoryController::class);
