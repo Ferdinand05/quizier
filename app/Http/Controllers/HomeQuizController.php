@@ -9,6 +9,6 @@ class HomeQuizController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Quiz/QuizView');
+        return Inertia::render('HomeQuiz/HomeQuizView');
     }
 }

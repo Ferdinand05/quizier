@@ -3,7 +3,7 @@
         {{ buttonType }}
     </fwb-button>
 
-    <fwb-modal v-if="isShowModal" @close="closeModal">
+    <fwb-modal v-if="isShowModal" @close="closeModal" :position="position">
         <template #header>
             <slot name="header"> </slot>
         </template>
@@ -41,6 +41,9 @@ defineProps({
     buttonType: {
         type: String,
         default: "Create",
+    },
+    position: {
+        type: String,
     },
 });
 defineExpose({ closeModal, showModal });

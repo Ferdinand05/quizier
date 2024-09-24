@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class Quiz extends Model
 {
     use HasFactory, HasUlids;
-    protected $fillable = ['nama_quiz', 'deskripsi', 'jumlah_soal', 'waktu_mulai', 'waktu_selesai'];
+    protected $primaryKey = 'ulid';
+    protected $fillable = ['nama_quiz', 'deskripsi', 'jumlah_soal', 'waktu_mulai', 'waktu_selesai', 'category_id'];
 
     public function category()
     {
