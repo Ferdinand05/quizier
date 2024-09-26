@@ -10,7 +10,7 @@ class Quiz extends Model
 {
     use HasFactory, HasUlids;
     protected $primaryKey = 'ulid';
-    protected $fillable = ['nama_quiz', 'deskripsi', 'jumlah_soal', 'waktu_mulai', 'waktu_selesai', 'category_id'];
+    protected $fillable = ['nama_quiz', 'deskripsi', 'jumlah_soal', 'durasi', 'category_id'];
 
     public function category()
     {

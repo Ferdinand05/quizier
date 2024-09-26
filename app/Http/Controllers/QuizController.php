@@ -36,8 +36,7 @@ class QuizController extends Controller
             'nama_quiz' => ['required'],
             'deskripsi' => ['required', 'string'],
             'jumlah_soal' => ['required'],
-            'waktu_mulai' => ['required'],
-            'waktu_selesai' => ['required'],
+            'durasi' => ['required'],
             'category_id' => ['required']
         ]);
 
@@ -45,8 +44,7 @@ class QuizController extends Controller
             'nama_quiz' => $request->nama_quiz,
             'deskripsi' => $request->deskripsi,
             'jumlah_soal' => $request->jumlah_soal,
-            'waktu_mulai' => $request->waktu_mulai,
-            'waktu_selesai' => $request->waktu_selesai,
+            'durasi' => $request->durasi,
             'category_id' => $request->category_id
         ]);
 
@@ -73,9 +71,26 @@ class QuizController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'nama_quiz' => ['required'],
+            'deskripsi' => ['required', 'string'],
+            'jumlah_soal' => ['required'],
+            'durasi' => ['required'],
+            'category_id' => ['required']
+        ]);
+
+        Quiz::where('ulid', $request->ulid)->update([
+            'nama_quiz' => $request->nama_quiz,
+            'deskripsi' => $request->deskripsi,
+            'jumlah_soal' => $request->jumlah_soal,
+            'durasi' => $request->durasi,
+            'category_id' => $request->category_id
+        ]);
+
+
+        return to_route('quiz.index')->with('message', 'Quiz telah diubah!');
     }
 
     /**

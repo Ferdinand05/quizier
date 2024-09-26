@@ -32,26 +32,13 @@
                                     v-model="formQuiz.jumlah_soal"
                                 ></FwbInput>
                                 <small>{{ formQuiz.errors.jumlah_soal }}</small>
-                                <div class="grid grid-cols-2 gap-x-3">
-                                    <FwbInput
-                                        label="Waktu Mulai"
-                                        size="sm"
-                                        type="datetime-local"
-                                        v-model="formQuiz.waktu_mulai"
-                                    ></FwbInput>
-                                    <FwbInput
-                                        label="Waktu Selesai"
-                                        size="sm"
-                                        type="datetime-local"
-                                        v-model="formQuiz.waktu_selesai"
-                                    ></FwbInput>
-                                </div>
-                                <small
-                                    >{{ formQuiz.errors.waktu_mulai }}
-                                </small>
-                                <small>{{
-                                    formQuiz.errors.waktu_selesai
-                                }}</small>
+                                <FwbInput
+                                    type="number"
+                                    label="Waktu (Menit)"
+                                    v-model="formQuiz.durasi"
+                                ></FwbInput>
+                                <small>{{ formQuiz.errors.durasi }} </small>
+
                                 <FwbSelect
                                     placeholder="Pilih Kategori"
                                     label="Kategori"
@@ -81,9 +68,7 @@
                                 <th scope="col" class="px-6 py-3">
                                     Jumlah Soal
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Waktu Mulai - Selesai
-                                </th>
+                                <th scope="col" class="px-6 py-3">Waktu</th>
                                 <th scope="col" class="px-6 py-3">Aksi</th>
                             </tr>
                         </thead>
@@ -103,12 +88,84 @@
                                 <td class="px-6 py-4">{{ q.jumlah_soal }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex justify-around">
-                                        <span>{{ q.waktu_mulai }}</span>
-                                        <span>{{ q.waktu_selesai }}</span>
+                                        {{ q.durasi }} Menit
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 flex space-x-1">
-                                    <FwbButton size="xs">Edit</FwbButton>
+                                    <Modal
+                                        buttonType="Edit"
+                                        ref="modalEdit"
+                                        position="top-center"
+                                    >
+                                        <template #header> Edit Quiz </template>
+                                        <template #body>
+                                            <form
+                                                action=""
+                                                method="post"
+                                                @submit.prevent="
+                                                    updateQuiz(q, i)
+                                                "
+                                            >
+                                                <div class="space-y-3 mb-3">
+                                                    <FwbInput
+                                                        label="Nama Kuis"
+                                                        size="sm"
+                                                        v-model="q.nama_quiz"
+                                                    ></FwbInput>
+                                                    <small>{{
+                                                        formEditQuiz.errors
+                                                            .nama_quiz
+                                                    }}</small>
+                                                    <FwbInput
+                                                        label="Deskripsi"
+                                                        size="sm"
+                                                        v-model="q.deskripsi"
+                                                    ></FwbInput>
+                                                    <small>{{
+                                                        formEditQuiz.errors
+                                                            .deskripsi
+                                                    }}</small>
+                                                    <FwbInput
+                                                        label="Jumlah Soal"
+                                                        size="sm"
+                                                        type="number"
+                                                        v-model="q.jumlah_soal"
+                                                    ></FwbInput>
+                                                    <small>{{
+                                                        formEditQuiz.errors
+                                                            .jumlah_soal
+                                                    }}</small>
+                                                    <FwbInput
+                                                        type="number"
+                                                        label="Waktu (Menit)"
+                                                        v-model="q.durasi"
+                                                    ></FwbInput>
+                                                    <small
+                                                        >{{
+                                                            formEditQuiz.errors
+                                                                .durasi
+                                                        }}
+                                                    </small>
+
+                                                    <FwbSelect
+                                                        placeholder="Pilih Kategori"
+                                                        label="Kategori"
+                                                        :options="
+                                                            categoryOptions
+                                                        "
+                                                        v-model="q.category_id"
+                                                    ></FwbSelect>
+                                                    <small>{{
+                                                        formEditQuiz.errors
+                                                            .category_id
+                                                    }}</small>
+                                                </div>
+                                                <FwbButton size="sm"
+                                                    >Submit</FwbButton
+                                                >
+                                            </form>
+                                        </template>
+                                    </Modal>
                                     <FwbButton
                                         color="red"
                                         size="xs"
@@ -153,8 +210,7 @@ const formQuiz = useForm({
     nama_quiz: null,
     deskripsi: null,
     jumlah_soal: null,
-    waktu_mulai: null,
-    waktu_selesai: null,
+    durasi: null,
 });
 
 function createQuiz() {
@@ -179,6 +235,36 @@ function destroyQuiz(id) {
         if (result.isConfirmed) {
             formQuiz.delete(route("quiz.destroy", id));
         }
+    });
+}
+
+const formEditQuiz = useForm({
+    ulid: null,
+    category_id: "",
+    nama_quiz: null,
+    deskripsi: null,
+    jumlah_soal: null,
+    durasi: null,
+});
+
+const modalEdit = ref(null);
+function updateQuiz(data, index) {
+    formEditQuiz.ulid = data.ulid;
+    formEditQuiz.nama_quiz = data.nama_quiz;
+    formEditQuiz.deskripsi = data.deskripsi;
+    formEditQuiz.jumlah_soal = data.jumlah_soal;
+    formEditQuiz.durasi = data.durasi;
+    formEditQuiz.category_id = data.category_id;
+
+    formEditQuiz.put(route("quiz.update", data.ulid), {
+        onSuccess: () => {
+            modalEdit.value[index].closeModal();
+            Swal.fire({
+                title: "Good job!",
+                text: "You clicked the button!",
+                icon: "success",
+            });
+        },
     });
 }
 </script>
