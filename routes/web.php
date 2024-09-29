@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\HomeQuizController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\RoleController;
 
@@ -26,3 +27,4 @@ Route::resource('dashboard/quiz', QuizController::class);
 Route::resource('dashboard/role', RoleController::class);
 Route::resource('dashboard/category', CategoryController::class);
 Route::resource('dashboard/question', QuestionController::class);
+Route::resource('dashboard/option', OptionController::class);

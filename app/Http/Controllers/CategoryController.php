@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         return Inertia::render('Dashboard/Category/CategoryView', [
-            'categories' => Category::all()
+            'categories' => Category::with('quizzes')->get()
         ]);
     }
 

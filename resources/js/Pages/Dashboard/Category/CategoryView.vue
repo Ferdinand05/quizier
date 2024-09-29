@@ -59,7 +59,7 @@
                                 {{ i + 1 }}
                             </th>
                             <td class="px-6 py-4">{{ c.nama_kategori }}</td>
-                            <td class="px-6 py-4">0</td>
+                            <td class="px-6 py-4">{{ c.quizzes.length }}</td>
                             <td class="px-6 py-4">
                                 {{
                                     Intl.DateTimeFormat("id", {

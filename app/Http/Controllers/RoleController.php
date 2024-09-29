@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,7 +13,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Dashboard/Role/RoleView');
+        return Inertia::render('Dashboard/Role/RoleView', ['roles' => Role::with(['users'])->get()]);
     }
 
     /**
@@ -28,7 +29,17 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_role' => ['required', 'unique:roles,nama_role']
+        ]);
+
+
+        Role::create([
+            'nama_role' => $request->nama_role
+        ]);
+
+
+        return to_route('role.index')->with('message', 'Role berhasil dibuat!');
     }
 
     /**

@@ -170,7 +170,7 @@
                 </li>
                 <li>
                     <Link
-                        href="#"
+                        :href="route('question.index')"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
@@ -192,6 +192,32 @@
 
                         <span class="flex-1 ms-3 whitespace-nowrap"
                             >Question</span
+                        >
+                    </Link>
+                </li>
+
+                <li>
+                    <Link
+                        :href="route('option.index')"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    >
+                        <svg
+                            class="icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-width="3"
+                                d="M12 6h.01M12 12h.01M12 18h.01"
+                            />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap"
+                            >Options</span
                         >
                     </Link>
                 </li>
@@ -219,31 +245,6 @@
 
                         <span class="flex-1 ms-3 whitespace-nowrap"
                             >Answer</span
-                        >
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                    >
-                        <svg
-                            class="icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-width="3"
-                                d="M12 6h.01M12 12h.01M12 18h.01"
-                            />
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap"
-                            >Options</span
                         >
                     </Link>
                 </li>

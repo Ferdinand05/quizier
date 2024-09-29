@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OptionResource;
 use App\Models\Option;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class OptionController extends Controller
 {
@@ -12,7 +14,10 @@ class OptionController extends Controller
      */
     public function index()
     {
-        //
+
+        return Inertia::render('Dashboard/Option/OptionView', [
+            'options' => OptionResource::collection(Option::all())
+        ]);
     }
 
     /**
