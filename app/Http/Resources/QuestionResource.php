@@ -24,7 +24,16 @@ class QuestionResource extends JsonResource
                 'nama_quiz' => $this->quiz->nama_quiz,
                 'category_id' => $this->quiz->category_id,
                 'kategori' => $this->quiz->category->nama_kategori
-            ]
+            ],
+            'options' => collect($this->options)->map(function ($item) {
+
+                return [
+                    'id' => $item->id,
+                    'question_id' => $item->question_id,
+                    'jawaban' => $item->jawaban,
+                    'is_correct' => $item->is_correct == 1 ? true : false
+                ];
+            })
         ];
     }
 }

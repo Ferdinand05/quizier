@@ -14,6 +14,12 @@ class OptionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'jawaban' => $this->jawaban,
+            'is_correct' => $this->is_correct,
+            'question_id' => $this->question_id,
+            'question' => $this->question
+        ];
     }
 }

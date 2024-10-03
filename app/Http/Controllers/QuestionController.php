@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OptionResource;
 use App\Http\Resources\QuestionResource;
+use App\Models\Option;
 use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
@@ -13,10 +15,13 @@ class QuestionController extends Controller
     public function index()
     {
 
-        $question = Question::latest()->get();
         return Inertia::render(
             'Dashboard/Question/QuestionView',
-            ['quiz' => Quiz::all(), 'questions' => QuestionResource::collection($question)]
+            [
+                'quiz' => Quiz::all(),
+                'questions' => QuestionResource::collection(Question::all()),
+                'options' => OptionResource::collection(Option::all())
+            ]
         );
     }
 
@@ -24,39 +29,87 @@ class QuestionController extends Controller
     {
         $request->validate([
             'pertanyaan' => ['required', 'string'],
-            'quiz_id' => ['required', 'exists:quizzes,ulid']
+            'quiz_id' => ['required', 'exists:quizzes,ulid'],
+            'answers' => ['required']
+
         ]);
 
 
-        Question::create([
+        $correctCount = collect($request->answers)->filter(function ($item) {
+            return $item['is_correct'] == "1";
+        })->count();
+
+        if ($correctCount != 1) {
+
+            return to_route('question.index')->with('message', 'Hanya boleh ada 1 Jawaban yang Benar');
+        }
+
+
+        $question = Question::create([
             'pertanyaan' => $request->pertanyaan,
             'quiz_id' => $request->quiz_id,
             'points' => $request->point
         ]);
 
-        return to_route('question.index')->with('message', 'Pertanyaan telah berhasil Dibuat!');
+
+
+        foreach ($request->answers as $option) {
+            Option::create([
+                'question_id' => $question->id,
+                'jawaban' => $option['text'],
+                'is_correct' => $option['is_correct']
+            ]);
+        }
+
+        return to_route('question.index')->with('message', 'Question & Option berhasil dibuat!');
     }
 
     public function update(Request $request)
     {
         $request->validate([
             'pertanyaan' => ['required', 'string'],
-            'quiz_id' => ['required', 'exists:quizzes,ulid']
+            'quiz_id' => ['required', 'exists:quizzes,ulid'],
+            'answers' => ['required']
         ]);
 
-        Question::whereId($request->id)->update([
+
+
+        $correctCount = collect($request->answers)->filter(function ($item) {
+            return $item['is_correct'] == true;
+        })->count();
+
+
+        if ($correctCount != 1) {
+
+            return to_route('question.index')->with('message', 'Hanya boleh ada 1 Jawaban yang Benar');
+        }
+
+
+
+        $question = Question::whereId($request->id)->first();
+        $question->update([
             'pertanyaan' => $request->pertanyaan,
             'quiz_id' => $request->quiz_id,
             'points' => $request->point
         ]);
 
-        return to_route('question.index')->with('message', 'Pertanyaan telah berhasil Diubah!');
+
+        foreach ($request->answers as $option) {
+            Option::where('id', $option['id'])->update([
+                'question_id' => $question->id,
+                'jawaban' => $option['text'],
+                'is_correct' => $option['is_correct']
+            ]);
+        }
+
+
+        return to_route('question.index')->with('message', 'Pertanyaan & Jawaban telah berhasil Diubah!');
     }
 
     public function destroy(Request $request)
     {
         Question::whereId($request->id)->delete();
-
-        return to_route('question.index')->with('message', 'Pertanyaan telah berhasil DiHapus!');
+        Option::where('question_id', $request->id)->delete();
+        return to_route('question.index')->with('message', 'Pertanyaan & Jawaban telah berhasil DiHapus!');
     }
 }

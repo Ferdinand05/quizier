@@ -40,6 +40,75 @@
                                     formQuestion.errors.quiz_id
                                 }}</small>
                             </div>
+                            <div>
+                                <label for=""> Pilihan Ganda : </label>
+                                <div class="space-y-1">
+                                    <div class="flex items-center">
+                                        <FwbInput
+                                            size="sm"
+                                            class="flex-1 mr-1"
+                                            v-model="
+                                                formQuestion.answers[0].text
+                                            "
+                                        ></FwbInput>
+                                        <FwbInput
+                                            type="checkbox"
+                                            v-model="
+                                                formQuestion.answers[0]
+                                                    .is_correct
+                                            "
+                                        ></FwbInput>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <FwbInput
+                                            size="sm"
+                                            class="flex-1 mr-1"
+                                            v-model="
+                                                formQuestion.answers[1].text
+                                            "
+                                        ></FwbInput>
+                                        <FwbInput
+                                            type="checkbox"
+                                            v-model="
+                                                formQuestion.answers[1]
+                                                    .is_correct
+                                            "
+                                        ></FwbInput>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <FwbInput
+                                            size="sm"
+                                            v-model="
+                                                formQuestion.answers[2].text
+                                            "
+                                            class="flex-1 mr-1"
+                                        ></FwbInput>
+                                        <FwbInput
+                                            type="checkbox"
+                                            v-model="
+                                                formQuestion.answers[2]
+                                                    .is_correct
+                                            "
+                                        ></FwbInput>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <FwbInput
+                                            size="sm"
+                                            class="flex-1 mr-1"
+                                            v-model="
+                                                formQuestion.answers[3].text
+                                            "
+                                        ></FwbInput>
+                                        <FwbInput
+                                            type="checkbox"
+                                            v-model="
+                                                formQuestion.answers[3]
+                                                    .is_correct
+                                            "
+                                        ></FwbInput>
+                                    </div>
+                                </div>
+                            </div>
                             <FwbButton :disabled="formQuestion.processing"
                                 >Submit</FwbButton
                             >
@@ -131,6 +200,37 @@
                                                         }}</small
                                                     >
                                                 </div>
+                                                <div class="space-y-1">
+                                                    <label
+                                                        for=""
+                                                        class="text-black font-normal"
+                                                    >
+                                                        Pilihan Ganda :
+                                                    </label>
+                                                    <div
+                                                        class="space-y-1"
+                                                        v-for="o in q.options"
+                                                    >
+                                                        <div
+                                                            class="flex items-center"
+                                                        >
+                                                            <FwbInput
+                                                                size="sm"
+                                                                class="flex-1 mr-1"
+                                                                v-model="
+                                                                    o.jawaban
+                                                                "
+                                                            ></FwbInput>
+
+                                                            <FwbInput
+                                                                type="checkbox"
+                                                                v-model="
+                                                                    o.is_correct
+                                                                "
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <FwbButton
                                                     :disabled="
                                                         formEditQuestion.processing
@@ -160,7 +260,13 @@
 import DashboardLayout from "../../../Layouts/DashboardLayout.vue";
 import Modal from "../../../Components/Modal.vue";
 import { useForm, usePage } from "@inertiajs/vue3";
-import { FwbButton, FwbInput, FwbSelect, FwbTextarea } from "flowbite-vue";
+import {
+    FwbButton,
+    FwbInput,
+    FwbSelect,
+    FwbTextarea,
+    FwbCheckbox,
+} from "flowbite-vue";
 import { ref } from "vue";
 import Swal from "sweetalert2";
 import { Ckeditor } from "@ckeditor/ckeditor5-vue";
@@ -178,6 +284,7 @@ import {
     Paragraph,
     Table,
     Undo,
+    retry,
 } from "ckeditor5";
 import "ckeditor5/ckeditor5.css";
 const editor = ClassicEditor;
@@ -214,6 +321,8 @@ const editorConfig = {
     ],
 };
 
+const checkboxCheck = ref(true);
+
 defineProps({
     questions: Object,
 });
@@ -233,6 +342,12 @@ const formQuestion = useForm({
     pertanyaan: "",
     quiz_id: "",
     point: 1,
+    answers: [
+        { text: "", is_correct: false },
+        { text: "", is_correct: false },
+        { text: "", is_correct: false },
+        { text: "", is_correct: false },
+    ],
 });
 
 function createQuestion() {
@@ -250,12 +365,24 @@ const formEditQuestion = useForm({
     pertanyaan: "",
     quiz_id: "",
     point: 1,
+    answers: [
+        { id: null, text: "", is_correct: false },
+        { id: null, text: "", is_correct: false },
+        { id: null, text: "", is_correct: false },
+        { id: null, text: "", is_correct: false },
+    ],
 });
 function updateQuestion(q, i) {
     formEditQuestion.id = q.id;
     formEditQuestion.pertanyaan = q.pertanyaan;
     formEditQuestion.quiz_id = q.quiz_id;
     formEditQuestion.point = q.points;
+
+    q.options.forEach(function (item, index) {
+        formEditQuestion.answers[index].id = item.id;
+        formEditQuestion.answers[index].text = item.jawaban;
+        formEditQuestion.answers[index].is_correct = item.is_correct;
+    });
 
     formEditQuestion.put(route("question.update", q.id), {
         onSuccess: () => {

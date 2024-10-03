@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\OptionResource;
+use App\Http\Resources\QuestionResource;
 use App\Models\Option;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,7 +18,8 @@ class OptionController extends Controller
     {
 
         return Inertia::render('Dashboard/Option/OptionView', [
-            'options' => OptionResource::collection(Option::all())
+            'options' => OptionResource::collection(Option::all()),
+            'questions' => QuestionResource::collection(Question::all())
         ]);
     }
 
