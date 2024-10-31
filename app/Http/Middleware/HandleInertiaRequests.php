@@ -3,8 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\Models\Quiz;
-use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -40,6 +41,12 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn() => $request->session()->get('message')
             ],
+            'auth.user' => [
+                'role_id' => Auth::user()?->role_id,
+                'username' => Auth::user()?->username,
+                'role' => Auth::user()?->role->nama_role
+            ],
+            'userAnswer' => $request->session()->get('userAnswer'),
             'countQuiz' => Quiz::count()
         ]);
     }
