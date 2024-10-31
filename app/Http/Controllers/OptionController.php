@@ -18,7 +18,7 @@ class OptionController extends Controller
     {
 
         return Inertia::render('Dashboard/Option/OptionView', [
-            'options' => OptionResource::collection(Option::all()),
+            'options' => OptionResource::collection(Option::paginate(10)),
             'questions' => QuestionResource::collection(Question::all())
         ]);
     }

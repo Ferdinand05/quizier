@@ -116,7 +116,19 @@
                     </template>
                 </Modal>
             </div>
+
             <div>
+                <div class="space-y-1 mb-3">
+                    <div class="md:w-[25%]">
+                        <FwbSelect
+                            placeholder="Filter Kategori Soal"
+                        ></FwbSelect>
+                    </div>
+                    <div class="md:w-[50%]">
+                        <FwbInput placeholder="Search..."></FwbInput>
+                    </div>
+                </div>
+
                 <div
                     class="relative overflow-x-auto shadow-md sm:rounded-lg break-words"
                 >

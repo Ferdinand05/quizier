@@ -55,7 +55,9 @@
                                     {{ i + 1 }}
                                 </th>
                                 <td class="px-6 py-4">{{ role.nama_role }}</td>
-                                <td class="px-6 py-4">{{ 0 }}</td>
+                                <td class="px-6 py-4">
+                                    {{ role.users.length }}
+                                </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-x-2">
                                         <FwbButton size="sm">Edit</FwbButton>
