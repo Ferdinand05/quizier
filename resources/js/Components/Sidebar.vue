@@ -117,7 +117,7 @@
                 </li>
                 <li>
                     <Link
-                        href="#"
+                        :href="route('user.index')"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
@@ -223,7 +223,7 @@
                 </li>
                 <li>
                     <Link
-                        href="#"
+                        :href="route('answer.index')"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
@@ -250,7 +250,7 @@
                 </li>
                 <li>
                     <Link
-                        href="#"
+                        :href="route('result.index')"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
@@ -278,7 +278,7 @@
                 <div class="border-b font-normal text-gray-700">User</div>
                 <li>
                     <Link
-                        href="#"
+                        href=""
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
@@ -297,18 +297,21 @@
                                 d="M10 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h2m10 1a3 3 0 0 1-3 3m3-3a3 3 0 0 0-3-3m3 3h1m-4 3a3 3 0 0 1-3-3m3 3v1m-3-4a3 3 0 0 1 3-3m-3 3h-1m4-3v-1m-2.121 1.879-.707-.707m5.656 5.656-.707-.707m-4.242 0-.707.707m5.656-5.656-.707.707M12 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                             />
                         </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap"
-                            >Ferdinand</span
-                        >
+                        <span class="flex-1 ms-3 whitespace-nowrap">{{
+                            $page.props.auth.user.username
+                        }}</span>
                         <span
-                            class="inline-flex items-center justify-center w-16 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300"
-                            >Admin</span
+                            class="inline-flex items-center justify-center w-16 h-3 p-5 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300"
                         >
+                            {{ $page.props.auth.user.role }}
+                        </span>
                     </Link>
                 </li>
                 <li>
                     <Link
-                        href="#"
+                        :href="route('logout')"
+                        as="button"
+                        method="post"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
