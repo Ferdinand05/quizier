@@ -28,6 +28,7 @@
                                 class="space-y-4 md:space-y-6"
                                 action="#"
                                 method="post"
+                                @submit.prevent="login()"
                             >
                                 <div>
                                     <label
@@ -39,10 +40,13 @@
                                         type="email"
                                         name="email"
                                         id="email"
+                                        v-model="formLogin.email"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="name@company.com"
-                                        required=""
                                     />
+                                    <small class="text-red-500">{{
+                                        formLogin.errors.email
+                                    }}</small>
                                 </div>
                                 <div>
                                     <label
@@ -54,10 +58,13 @@
                                         type="password"
                                         name="password"
                                         id="password"
+                                        v-model="formLogin.password"
                                         placeholder="••••••••"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        required=""
                                     />
+                                    <small class="text-red-500">{{
+                                        formLogin.errors.password
+                                    }}</small>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-start">
@@ -67,7 +74,7 @@
                                                 aria-describedby="remember"
                                                 type="checkbox"
                                                 class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-                                                required=""
+                                                v-model="formLogin.remember_me"
                                             />
                                         </div>
                                         <div class="ml-3 text-sm">
@@ -111,4 +118,18 @@
 
 <script setup>
 import Layout from "../../Layouts/Layout.vue";
+import { useForm, usePage } from "@inertiajs/vue3";
+
+const formLogin = useForm({
+    email: null,
+    password: null,
+    remember_me: false,
+});
+
+function login() {
+    formLogin.post(route("login.store"), {
+        preserveScroll: true,
+        preserveState: true,
+    });
+}
 </script>
