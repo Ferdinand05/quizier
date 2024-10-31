@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AnswerResource;
 use App\Models\Answer;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AnswerController extends Controller
 {
@@ -12,7 +14,13 @@ class AnswerController extends Controller
      */
     public function index()
     {
-        //
+        $answers = Answer::orderBy('created_at', 'desc')->get();
+        return Inertia::render(
+            'Dashboard/Answer/AnswerView',
+            [
+                'answers' => AnswerResource::collection($answers)
+            ]
+        );
     }
 
     /**
