@@ -148,7 +148,18 @@ function back() {
     });
 }
 
-const time = page.props.quiz.data.durasi * 60 * 1000;
+let initialTime = page.props.quiz.data.durasi * 60 * 1000;
+const savedStartTime = localStorage.getItem("quizStartTime");
+
+if (!savedStartTime) {
+    const startTime = Date.now();
+    localStorage.setItem("quizStartTime", startTime);
+} else {
+    const elapsed = Date.now() - savedStartTime;
+    initialTime = Math.max(0, initialTime - elapsed);
+}
+// Countdown dengan waktu yang tersisa
+const time = ref(initialTime);
 
 const formFinishQuiz = useForm({
     quiz_id: page.props.quiz.data.ulid,
@@ -175,5 +186,7 @@ function finishQuiz() {
         preserveScroll: true,
         preserveState: true,
     });
+
+    localStorage.removeItem("quizStartTime");
 }
 </script>

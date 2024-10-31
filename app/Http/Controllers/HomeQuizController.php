@@ -111,6 +111,11 @@ class HomeQuizController extends Controller
         $userAnswers = Answer::where('user_id', Auth::id())->where('quiz_id', $request->quiz_id)
             ->get();
 
+        if ($userAnswers->isEmpty()) {
+
+            return back()->with('message', 'Isi jawaban terlebih dahulu');
+        }
+
         $quizOptions = Option::whereIn('id', $userAnswers->pluck('option_id'))->get();
 
         $score = 0;
