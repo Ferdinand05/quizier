@@ -18,6 +18,6 @@ class Result extends Model
 
     public function quizResult()
     {
-        return $this->belongsTo(Quiz::class, 'quiz_id', 'id');
+        return $this->belongsTo(Quiz::class, 'quiz_id', 'ulid');
     }
 }

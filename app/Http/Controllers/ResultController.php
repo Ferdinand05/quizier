@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ResultResource;
 use App\Models\Result;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ResultController extends Controller
 {
@@ -12,7 +14,10 @@ class ResultController extends Controller
      */
     public function index()
     {
-        //
+        $results = Result::all();
+        return Inertia::render('Dashboard/Result/ResultView', [
+            'results' => ResultResource::collection($results)
+        ]);
     }
 
     /**
