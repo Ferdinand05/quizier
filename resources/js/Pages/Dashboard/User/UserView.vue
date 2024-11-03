@@ -52,7 +52,70 @@
                                 <td class="px-6 py-4 font-semibold">
                                     {{ user.role }}
                                 </td>
-                                <td class="px-6 py-4">Edit | Delete</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex space-x-1">
+                                        <Modal
+                                            ref="modalEdit"
+                                            buttonType="Edit"
+                                            position="center"
+                                        >
+                                            <template #header
+                                                >Edit User
+                                                {{ user.username }}</template
+                                            >
+                                            <template #body>
+                                                <form
+                                                    action=""
+                                                    @submit.prevent="
+                                                        editUser(user, i)
+                                                    "
+                                                    method="post"
+                                                >
+                                                    <div class="mb-2">
+                                                        <FwbInput
+                                                            type="text"
+                                                            label="Username"
+                                                            v-model="
+                                                                user.username
+                                                            "
+                                                        ></FwbInput>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <FwbInput
+                                                            type="text"
+                                                            label="Name"
+                                                            v-model="user.name"
+                                                        ></FwbInput>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <FwbSelect
+                                                            label="Pilih Kategori"
+                                                            Placeholder="Pilih Kategori"
+                                                            :options="
+                                                                roleOption
+                                                            "
+                                                            v-model="
+                                                                user.role_id
+                                                            "
+                                                        ></FwbSelect>
+                                                    </div>
+                                                    <FwbButton
+                                                        type="submit"
+                                                        size="sm"
+                                                    >
+                                                        Update
+                                                    </FwbButton>
+                                                </form>
+                                            </template>
+                                        </Modal>
+                                        <FwbButton
+                                            size="sm"
+                                            color="red"
+                                            @click="deleteUser(user.id)"
+                                            >Delete</FwbButton
+                                        >
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -63,9 +126,68 @@
 </template>
 
 <script setup>
+import { FwbButton, FwbInput, FwbSelect } from "flowbite-vue";
 import DashboardLayout from "../../../Layouts/DashboardLayout.vue";
 import { usePage, useForm } from "@inertiajs/vue3";
+import Modal from "../../../Components/Modal.vue";
+import { ref } from "vue";
+import Swal from "sweetalert2";
 defineProps({
     users: Object,
 });
+const page = usePage({});
+const roleOption = [];
+page.props.roles.forEach((element) => {
+    roleOption.push({
+        name: element.nama_role,
+        value: element.id,
+    });
+});
+
+const formEditUser = useForm({
+    username: null,
+    name: null,
+    role_id: null,
+    id: null,
+});
+const modalEdit = ref(null);
+function editUser(user, index) {
+    (formEditUser.username = user.username),
+        (formEditUser.name = user.name),
+        (formEditUser.role_id = user.role_id);
+    formEditUser.id = user.id;
+
+    formEditUser.put(route("user.update", user.id), {
+        preserveState: true,
+        onSuccess: () => {
+            modalEdit.value[index].closeModal();
+        },
+    });
+}
+
+function deleteUser(id) {
+    formEditUser.id = id;
+
+    Swal.fire({
+        title: "Apakah kamu yakin ?",
+        text: "kamu akan segera menghapus data ini",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Hapus!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            formEditUser.delete(route("user.destroy", id), {
+                onSuccess: () => {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Data sudah terhapus!",
+                        icon: "success",
+                    });
+                },
+            });
+        }
+    });
+}
 </script>
