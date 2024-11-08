@@ -118,10 +118,13 @@
             </div>
 
             <div>
-                <div class="space-y-1 mb-3">
+                <div class="space-y-1 mb-5">
                     <div class="md:w-[25%]">
                         <FwbSelect
-                            placeholder="Filter Kategori Soal"
+                            placeholder="Filter"
+                            :options="quizOptions"
+                            v-model="formFilterQuestion.id"
+                            @change="filterQuestion()"
                         ></FwbSelect>
                     </div>
                     <div class="md:w-[50%]">
@@ -333,10 +336,9 @@ const editorConfig = {
     ],
 };
 
-const checkboxCheck = ref(true);
-
 defineProps({
     questions: Object,
+    quiz: Object,
 });
 const modalCreate = ref(null);
 const modalEdit = ref(null);
@@ -349,6 +351,17 @@ page.props.quiz.forEach((element) => {
         name: element.nama_quiz,
     });
 });
+
+const formFilterQuestion = useForm({
+    id: "",
+});
+
+function filterQuestion() {
+    formFilterQuestion.get(route("question.index"), {
+        preserveScroll: true,
+        preserveState: true,
+    });
+}
 
 const formQuestion = useForm({
     pertanyaan: "",

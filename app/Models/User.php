@@ -22,7 +22,10 @@ class User extends Authenticatable
         'password',
         'username',
         'role_id',
-        'picture'
+        'picture',
+        'google_id',
+        'google_token',
+        'google_refresh_token'
     ];
 
     /**

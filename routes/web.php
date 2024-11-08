@@ -1,20 +1,23 @@
 <?php
 
-use App\Http\Controllers\AnswerController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CategoryController;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuizController;
-use App\Http\Controllers\HomeQuizController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OptionController;
-use App\Http\Controllers\QuestionController;
-use App\Http\Controllers\ResultController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\OptionController;
+use App\Http\Controllers\ResultController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeQuizController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SocialiteController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/quiz', [HomeQuizController::class, 'index'])->name('quiz.view');
@@ -26,6 +29,11 @@ Route::post('login', [AuthController::class, 'store'])->name('login.store');
 Route::get('register', [AuthController::class, 'register'])->name('register');
 Route::post('register', [AuthController::class, 'registerStore'])->name('register.store');
 
+
+// Auth Socialite - google
+Route::get('/auth/redirect', [SocialiteController::class, 'redirect'])->name('auth.redirect');
+
+Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->name('auth.callback');
 
 Route::middleware('auth')->group(function () {
     // Logout

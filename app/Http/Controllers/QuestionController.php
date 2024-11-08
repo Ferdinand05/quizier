@@ -12,15 +12,21 @@ use Inertia\Inertia;
 
 class QuestionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+        if ($request->id) {
+            $question = Question::where('quiz_id', $request->id)->get();
+        } else {
+            $question = Question::all();
+        }
 
         return Inertia::render(
             'Dashboard/Question/QuestionView',
             [
                 'quiz' => Quiz::all(),
-                'questions' => QuestionResource::collection(Question::all()),
-                'options' => OptionResource::collection(Option::all())
+                'questions' => QuestionResource::collection($question),
+                'options' => OptionResource::collection(Option::all()),
             ]
         );
     }

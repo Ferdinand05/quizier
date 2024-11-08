@@ -5,7 +5,10 @@
         <div class="my-3">
             <div class="md:w-[50%] mb-3">
                 <FwbSelect
-                    placeholder="Filter Berdasarkan Kategori Quiz"
+                    placeholder="Filter"
+                    :options="questionOptions"
+                    v-model="formFilterOption.id"
+                    @change="filterOption()"
                 ></FwbSelect>
             </div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -68,5 +71,26 @@ import { useForm, usePage } from "@inertiajs/vue3";
 
 defineProps({
     options: Object,
+    questions: Object,
 });
+
+const page = usePage({});
+const questionOptions = [];
+page.props.questions.data.forEach((element) => {
+    questionOptions.push({
+        value: element.id,
+        name: element.pertanyaan,
+    });
+});
+
+const formFilterOption = useForm({
+    id: "",
+});
+
+function filterOption() {
+    formFilterOption.get(route("option.index"), {
+        preserveScroll: true,
+        preserveState: true,
+    });
+}
 </script>
