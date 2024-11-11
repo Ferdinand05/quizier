@@ -31,9 +31,9 @@ Route::post('register', [AuthController::class, 'registerStore'])->name('registe
 
 
 // Auth Socialite - google
-Route::get('/auth/redirect', [SocialiteController::class, 'redirect'])->name('auth.redirect');
+Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect'])->name('auth.redirect');
 
-Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->name('auth.callback');
+Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback'])->name('auth.callback');
 
 Route::middleware('auth')->group(function () {
     // Logout

@@ -14,40 +14,62 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteController extends Controller
 {
-    public function redirect()
+    public function redirect($provider)
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver($provider)->redirect();
     }
 
 
-    public function callback()
+    public function callback($provider)
     {
-        $socialUser = Socialite::driver('google')->user();
 
-        $registeredUser = User::where('google_id', $socialUser->id)->first();
+        $socialUser = Socialite::driver("$provider")->user();
 
+        if ($provider == 'google') {
 
-        if (!$registeredUser) {
-            $user = User::updateOrCreate([
-                'google_id' => $socialUser->id,
-            ], [
-                'name' => $socialUser->name,
-                'username' => $socialUser->name,
-                'picture' => $socialUser->avatar,
-                'password' => Str::password(7, true, true, false, false),
-                'email' => $socialUser->email,
-                'google_token' => $socialUser->token,
-                'google_refresh_token' => $socialUser->refreshToken,
-                'role_id' => 3
-            ]);
+            $registeredUser = User::where('google_id', $socialUser->id)->first();
+            if (!$registeredUser) {
+                $user = User::updateOrCreate([
+                    'google_id' => $socialUser->id,
+                ], [
+                    'name' => $socialUser->name,
+                    'username' => $socialUser->name,
+                    'picture' => $socialUser->avatar,
+                    'password' => Str::password(7, true, true, false, false),
+                    'email' => $socialUser->email,
+                    'google_token' => $socialUser->token,
+                    'google_refresh_token' => $socialUser->refreshToken,
+                    'role_id' => 3
+                ]);
 
-            Auth::login($user);
+                Auth::login($user);
 
-            return redirect('/')->with('message', 'Anda berhasil Login!');
+                return redirect('/')->with('message', 'Anda berhasil Login!');
+            }
+
+            Auth::login($registeredUser);
+            return redirect('/')->with('message', 'Anda berhasil login!');
+        } elseif ($provider == 'github') {
+
+            $registeredUser = User::where('google_id', $socialUser->id)->first();
+            if (!$registeredUser) {
+                $user = User::updateOrCreate([
+                    'google_id' => $socialUser->id,
+                ], [
+                    'name' => $socialUser->name,
+                    'username' => $socialUser->name,
+                    'picture' => $socialUser->avatar,
+                    'password' => Str::password(7, true, true, false, false),
+                    'email' => $socialUser->email,
+                    'google_token' => $socialUser->token,
+                    'google_refresh_token' => $socialUser->refreshToken,
+                    'role_id' => 3
+                ]);
+
+                Auth::login($user);
+
+                return redirect('/')->with('message', 'Anda berhasil Login!');
+            }
         }
-
-        Auth::login($registeredUser);
-
-        return redirect('/')->with('Anda berhasil login!');
     }
 }
